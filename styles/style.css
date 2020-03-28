@@ -1,0 +1,130 @@
+#container {
+    position: relative;
+    display: grid;
+    width: 300px;
+    height: 400px;
+    margin: 50px auto 0;
+    border-style: solid;
+    border-width: 1px;
+    border-color: darkgray;
+    background-color: #f3f3f3;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 2fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+#output {
+    display: inline;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    text-align: right;
+    font-size: 3em;
+    font-weight: bolder;
+}
+
+#displayArea {
+    position: relative;
+    grid-column: 1/5;
+    grid-row: 1/2;
+}
+
+#buttonClearEverything {
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+
+#buttonClear {
+    grid-column: 2/3;
+    grid-row: 2/3;
+}
+
+#buttonBackspace {
+    grid-column: 3/4;
+    grid-row: 2/3;
+}
+
+#buttonDivide {
+    grid-column: 4/5;
+    grid-row: 2/3;
+}
+
+#button7 {
+    grid-column: 1/2;
+    grid-row: 3/4;
+}
+
+#button8 {
+    grid-column: 2/3;
+    grid-row: 3/4;
+}
+
+#button9 {
+    grid-column: 3/4;
+    grid-row: 3/4;
+}
+
+#buttonMultiply {
+    grid-column: 4/5;
+    grid-row: 3/4;
+}
+
+#button4 {
+    grid-column: 1/2;
+    grid-row: 4/5;
+}
+
+#button5 {
+    grid-column: 2/3;
+    grid-row: 4/5;
+}
+
+#button6 {
+    grid-column: 3/4;
+    grid-row: 4/5;
+}
+
+#buttonSubtract {
+    grid-column: 4/5;
+    grid-row: 4/5;
+}
+
+#button1 {
+    grid-column: 1/2;
+    grid-row: 5/6;
+}
+
+#button2 {
+    grid-column: 2/3;
+    grid-row: 5/6;
+}
+
+#button3 {
+    grid-column: 3/4;
+    grid-row: 5/6;
+}
+
+#buttonPlus {
+    grid-column: 4/5;
+    grid-row: 5/6;
+}
+
+#buttonSign {
+    grid-column: 1/2;
+    grid-row: 6/7;
+}
+
+#button0 {
+    grid-column: 2/3;
+    grid-row: 6/7;
+}
+
+#buttonDecimal {
+    grid-column: 3/4;
+    grid-row: 6/7;
+}
+
+#buttonEquals {
+    grid-column: 4/5;
+    grid-row: 6/7;
+}
+
