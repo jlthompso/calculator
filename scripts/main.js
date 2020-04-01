@@ -1,13 +1,8 @@
 const buttons = document.querySelectorAll("button");
 const disp = document.querySelector("#output");
 const histDisp = document.querySelector("#history");
-let history = "";
-let input = 0;
-const base = 10; // decimal
-let operands = [];
-let currentOperator;
-let operandIndex = 0;
-let temp = null;
+let currentInput = [];
+let history = [];
 
 buttons.forEach(button => {
     button.addEventListener("click", buttonPress);
@@ -16,188 +11,97 @@ buttons.forEach(button => {
 function buttonPress() {
     let buttonClass = this.classList.value;
     let buttonId = this.id;
-    console.log(operands);
     switch (buttonId) {
         case "button0":
-            input *= base;
-            disp.innerHTML = input;
-            operands[operandIndex] = input;
+            currentInput.push("0");
+            disp.innerHTML = currentInput.join("");
             break;
         case "button1":
-            input *= base;
-            input += 1;
-            disp.innerHTML = input;
-            operands[operandIndex] = input;
+            currentInput.push("1");
+            disp.innerHTML = currentInput.join("");
             break;
         case "button2":
-            input *= base;
-            input += 2;
-            disp.innerHTML = input;
-            operands[operandIndex] = input;
+            currentInput.push("2");
+            disp.innerHTML = currentInput.join("");
             break;
         case "button3":
-            input *= base;
-            input += 3;
-            disp.innerHTML = input;
-            operands[operandIndex] = input;
+            currentInput.push("3");
+            disp.innerHTML = currentInput.join("");
             break;
         case "button4":
-            input *= base;
-            input += 4;
-            disp.innerHTML = input;
-            operands[operandIndex] = input;
+            currentInput.push("4");
+            disp.innerHTML = currentInput.join("");
             break;
          case "button5":
-            input *= base;
-            input += 5;
-            disp.innerHTML = input;
-            operands[operandIndex] = input;
+            currentInput.push("5");
+            disp.innerHTML = currentInput.join("");
              break;
         case "button6":
-            input *= base;
-            input += 6;
-            disp.innerHTML = input;
-            operands[operandIndex] = input;
+            currentInput.push("6");
+            disp.innerHTML = currentInput.join("");
             break;
         case "button7":
-            input *= base;
-            input += 7;
-            disp.innerHTML = input;
-            operands[operandIndex] = input;
+            currentInput.push("7");
+            disp.innerHTML = currentInput.join("");
             break;
         case "button8":
-            input *= base;
-            input += 8;
-            disp.innerHTML = input;
-            operands[operandIndex] = input;
+            currentInput.push("8");
+            disp.innerHTML = currentInput.join("");
             break;
         case "button9":
-            input *= base;
-            input += 9;
-            disp.innerHTML = input;
-            operands[operandIndex] = input;
+            currentInput.push("9");
+            disp.innerHTML = currentInput.join("");
             break;
         case "buttonClear":
-            input = 0;
-            operands = [];
-            temp = null;
-            operandIndex = 0;
-            history = "";
-            disp.innerHTML = input;
-            histDisp.innerHTML = history;
+            currentInput = [];
+            disp.innerHTML = "0";
+            history = [];
+            histDisp.innerHTML = "";
             break;
         case "buttonClearEntry":
-            input = 0;
-            disp.innerHTML = input;
-            //operands[operandIndex] = input;
-            operands.pop;
+            currentInput = [];
+            disp.innerHTML = "0";
             break;
         case "buttonBackspace":
-            input -= (input % base);
-            input /= base;
-            disp.innerHTML = input;
-            operands[operandIndex] = input;
+            currentInput.pop();
+            (currentInput.length) ? disp.innerHTML = currentInput.join("") : disp.innerHTML = "0";
             break;
         case "buttonAdd":
-            input = 0;
-            currentOperator = "+";
-            operandIndex = 1;
-            if (temp !== null) {
-                disp.innerHTML = temp;
+            if (currentInput.length) {
+                history.push(currentInput.join(""));
+                history.push("+");
+                histDisp.innerHTML = history.join(" ");
+                currentInput = [];
+                disp.innerHTML = calculate(history);
             }
             break;
         case "buttonSubtract":
-            input = 0;
-            currentOperator = "-";
-            operandIndex = 1;
-            if (temp !== null) {
-                disp.innerHTML = temp;
+            if (currentInput.length) {
+                history.push(currentInput.join(""));
+                history.push("-");
+                histDisp.innerHTML = history.join(" ");
+                currentInput = [];
+                disp.innerHTML = calculate(history);
             }
             break;
         case "buttonMultiply":
-            input = 0;
-            currentOperator = "*";
-            operandIndex = 1;
-            if (temp !== null) {
-                disp.innerHTML = temp;
+            if (currentInput.length) {
+                history.push(currentInput.join(""));
+                history.push("*");
+                histDisp.innerHTML = history.join(" ");
+                currentInput = [];
+                disp.innerHTML = calculate(history);
             }
             break;
         case "buttonDivide":
-            input = 0;
-            currentOperator = "/";
-            operandIndex = 1;
-            if (temp !== null) {
-                disp.innerHTML = temp;
+            if (currentInput.length) {
+                history.push(currentInput.join(""));
+                history.push("/");
+                histDisp.innerHTML = history.join(" ");
+                currentInput = [];
+                disp.innerHTML = calculate(history);
             }
             break;
-        /*case "buttonAdd":
-            if (history.length === 0) {
-                history = `${input} + `;
-                histDisp.innerHTML = history;
-                operands.push(input);
-                input = 0;
-            }
-            else {
-                history += `${input} + `;
-                histDisp.innerHTML = history;
-                operands.push(input);
-                let temp = operate("+", operands[0], operands[1]);
-                operands = [temp];
-                input = 0;
-                disp.innerHTML = temp;
-            }
-            break;
-        case "buttonSubtract":
-            if (history.length === 0) {
-                history = `${input} - `;
-                histDisp.innerHTML = history;
-                operands.push(input);
-                input = 0;
-            }
-            else {
-                history += `${input} - `;
-                histDisp.innerHTML = history;
-                operands.push(input);
-                let temp = operate("-", operands[0], operands[1]);
-                operands = [temp];
-                input = 0;
-                disp.innerHTML = temp;
-            }
-            break;
-        case "buttonMultiply":
-            if (history.length === 0) {
-                history = `${input} × `;
-                histDisp.innerHTML = history;
-                operands.push(input);
-                input = 0;
-            }
-            else {
-                history += `${input} × `;
-                histDisp.innerHTML = history;
-                operands.push(input);
-                let temp = operate("*", operands[0], operands[1]);
-                operands = [temp];
-                input = 0;
-                disp.innerHTML = temp;
-            }
-            break;
-        case "buttonDivide":
-            if (history.length === 0) {
-                history = `${input} ÷ `;
-                histDisp.innerHTML = history;
-                operands.push(input);
-                input = 0;
-            }
-            else {
-                history += `${input} ÷ `;
-                histDisp.innerHTML = history;
-                operands.push(input);
-                let temp = operate("/", operands[0], operands[1]);
-                operands = [temp];
-                input = 0;
-                disp.innerHTML = temp;
-            }
-            break;*/
         case "buttonEquals":
             break;
         case "buttonDecimal":
@@ -205,39 +109,41 @@ function buttonPress() {
         case "buttonSign":
             break;
     }
-    if (operands.length === 2) {
-        //let temp;
-        switch (currentOperator) {
-            case "+":
-                temp = operate("+", operands[0], operands[1]);
-                operands = [temp];
-                operandIndex = 0;
-                //input = 0;
-                //disp.innerHTML = temp;
-                break;
-            case "-":
-                temp = operate("-", operands[0], operands[1]);
-                operands = [temp];
-                operandIndex = 0;
-                //input = 0;
-                //disp.innerHTML = temp;
-                break;
-            case "*":
-                temp = operate("*", operands[0], operands[1]);
-                operands = [temp];
-                operandIndex = 0;
-                //input = 0;
-                //disp.innerHTML = temp;
-                break;
-            case "/":
-                temp = operate("/", operands[0], operands[1]);
-                operands = [temp];
-                operandIndex = 0;
-                //input = 0;
-                //disp.innerHTML = temp;
-                break;
+}
+
+function calculate(equation) {
+    let operands = [];
+    let operators = [];
+    let result;
+    for (let i = 0; i < (equation.length - 1); i++) {
+        if (isNaN(Number(equation[i]))) {
+            operators.push(equation[i]);
+        }
+        else {
+            operands.push(Number(equation[i]));
         }
     }
+    if (operands.length < 2) {
+        result = operands[0];
+    }
+    else {
+        let x, y, operator;
+        for (let i = 0; i < operators.length; i++) {
+            if (i) {
+                x = result;
+                y = operands[i + 1];
+                operator = operators[i];
+                result = operate(operator, x, y);
+            }
+            else {
+                x = operands[i];
+                y = operands[i + 1];
+                operator = operators[i];
+                result = operate(operator, x, y);
+            }
+        }
+    }
+    return result;
 }
 
 function operate() {
