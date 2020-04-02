@@ -13,43 +13,44 @@ function buttonPress() {
     let buttonId = this.id;
     switch (buttonId) {
         case "button0":
-            currentInput.push("0");
+            console.log(currentInput);
+            (currentInput[0] === "0" && currentInput.length) ? currentInput = ["0"] : currentInput.push("0");
             disp.innerHTML = currentInput.join("");
             break;
         case "button1":
-            currentInput.push("1");
+            (currentInput[0] === "0" && currentInput.length) ? currentInput = ["1"] : currentInput.push("1");
             disp.innerHTML = currentInput.join("");
             break;
         case "button2":
-            currentInput.push("2");
+            (currentInput[0] === "0" && currentInput.length) ? currentInput = ["2"] : currentInput.push("2");
             disp.innerHTML = currentInput.join("");
             break;
         case "button3":
-            currentInput.push("3");
+            (currentInput[0] === "0" && currentInput.length) ? currentInput = ["3"] : currentInput.push("3");
             disp.innerHTML = currentInput.join("");
             break;
         case "button4":
-            currentInput.push("4");
+            (currentInput[0] === "0" && currentInput.length) ? currentInput = ["4"] : currentInput.push("4");
             disp.innerHTML = currentInput.join("");
             break;
          case "button5":
-            currentInput.push("5");
+            (currentInput[0] === "0" && currentInput.length) ? currentInput = ["5"] : currentInput.push("5");
             disp.innerHTML = currentInput.join("");
              break;
         case "button6":
-            currentInput.push("6");
+            (currentInput[0] === "0" && currentInput.length) ? currentInput = ["6"] : currentInput.push("6");
             disp.innerHTML = currentInput.join("");
             break;
         case "button7":
-            currentInput.push("7");
+            (currentInput[0] === "0" && currentInput.length) ? currentInput = ["7"] : currentInput.push("7");
             disp.innerHTML = currentInput.join("");
             break;
         case "button8":
-            currentInput.push("8");
+            (currentInput[0] === "0" && currentInput.length) ? currentInput = ["8"] : currentInput.push("8");
             disp.innerHTML = currentInput.join("");
             break;
         case "button9":
-            currentInput.push("9");
+            (currentInput[0] === "0" && currentInput.length) ? currentInput = ["9"] : currentInput.push("9");
             disp.innerHTML = currentInput.join("");
             break;
         case "buttonClear":
@@ -68,8 +69,7 @@ function buttonPress() {
             break;
         case "buttonAdd":
             if (currentInput.length) {
-                history.push(currentInput.join(""));
-                history.push("+");
+                history.push(currentInput.join(""), "+");
                 histDisp.innerHTML = history.join(" ");
                 currentInput = [];
                 disp.innerHTML = calculate(history);
@@ -77,8 +77,7 @@ function buttonPress() {
             break;
         case "buttonSubtract":
             if (currentInput.length) {
-                history.push(currentInput.join(""));
-                history.push("-");
+                history.push(currentInput.join(""), "-");
                 histDisp.innerHTML = history.join(" ");
                 currentInput = [];
                 disp.innerHTML = calculate(history);
@@ -86,8 +85,7 @@ function buttonPress() {
             break;
         case "buttonMultiply":
             if (currentInput.length) {
-                history.push(currentInput.join(""));
-                history.push("*");
+                history.push(currentInput.join(""), "*");
                 histDisp.innerHTML = history.join(" ");
                 currentInput = [];
                 disp.innerHTML = calculate(history);
@@ -95,14 +93,24 @@ function buttonPress() {
             break;
         case "buttonDivide":
             if (currentInput.length) {
-                history.push(currentInput.join(""));
-                history.push("/");
+                history.push(currentInput.join(""), "/");
                 histDisp.innerHTML = history.join(" ");
                 currentInput = [];
                 disp.innerHTML = calculate(history);
             }
             break;
         case "buttonEquals":
+            switch (currentInput.length) {
+                case 0:
+                    histDisp.innerHTML = "0 = ";
+                    currentInput = [0];
+                    disp.innerHTML = "0";
+                    break;
+                case 1:
+                    break;
+                default:
+                    break;
+            }
             break;
         case "buttonDecimal":
             break;
