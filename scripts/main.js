@@ -3,6 +3,7 @@ const disp = document.querySelector("#output");
 const histDisp = document.querySelector("#history");
 let currentInput = [];
 let history = [];
+let prevOperator = "";
 
 buttons.forEach(button => {
     button.addEventListener("click", buttonPress);
@@ -11,55 +12,41 @@ buttons.forEach(button => {
 function buttonPress() {
     let buttonClass = this.classList.value;
     let buttonId = this.id;
+    let num;
+    let currentOperator;
     switch (buttonId) {
         case "button0":
-            (currentInput[0] === 0 && currentInput.length) ? currentInput = [0] : currentInput.push(0);
-            disp.innerHTML = currentInput.join("");
+            num = 0;
             break;
         case "button1":
-            if ((currentInput[0] === 0 && currentInput.length) || !history.length) {
-                currentInput = [1];
-                history = [];
-                histDisp.innerHTML = "";
-            }
-            else {
-                currentInput.push(1);
-            }
-            disp.innerHTML = currentInput.join("");
+            num = 1;
             break;
         case "button2":
-            (currentInput[0] === 0 && currentInput.length) ? currentInput = [2] : currentInput.push(2);
-            disp.innerHTML = currentInput.join("");
+            num = 2;
             break;
         case "button3":
-            (currentInput[0] === 0 && currentInput.length) ? currentInput = [3] : currentInput.push(3);
-            disp.innerHTML = currentInput.join("");
+            num = 3;
             break;
         case "button4":
-            (currentInput[0] === 0 && currentInput.length) ? currentInput = [4] : currentInput.push(4);
-            disp.innerHTML = currentInput.join("");
+            num = 4;
             break;
          case "button5":
-            (currentInput[0] === 0 && currentInput.length) ? currentInput = [5] : currentInput.push(5);
-            disp.innerHTML = currentInput.join("");
+            num = 5;
              break;
         case "button6":
-            (currentInput[0] === 0 && currentInput.length) ? currentInput = [6] : currentInput.push(6);
-            disp.innerHTML = currentInput.join("");
+            num = 6;
             break;
         case "button7":
-            (currentInput[0] === 0 && currentInput.length) ? currentInput = [7] : currentInput.push(7);
-            disp.innerHTML = currentInput.join("");
+            num = 7;
             break;
         case "button8":
-            (currentInput[0] === 0 && currentInput.length) ? currentInput = [8] : currentInput.push(8);
-            disp.innerHTML = currentInput.join("");
+            num = 8;
             break;
         case "button9":
-            (currentInput[0] === 0 && currentInput.length) ? currentInput = [9] : currentInput.push(9);
-            disp.innerHTML = currentInput.join("");
+            num = 9;
             break;
         case "buttonClear":
+            prevOperator = "";
             currentInput = [];
             disp.innerHTML = 0;
             history = [];
@@ -74,36 +61,16 @@ function buttonPress() {
             (currentInput.length) ? disp.innerHTML = currentInput.join("") : disp.innerHTML = 0;
             break;
         case "buttonAdd":
-            if (currentInput.length || history.length) {
-                history.push(currentInput.join(""), "+");
-                histDisp.innerHTML = history.join(" ");
-                currentInput = [];
-                disp.innerHTML = calculate(history);
-            }
+            currentOperator = "+";
             break;
         case "buttonSubtract":
-            if (currentInput.length || history.length) {
-                history.push(currentInput.join(""), "-");
-                histDisp.innerHTML = history.join(" ");
-                currentInput = [];
-                disp.innerHTML = calculate(history);
-            }
+            currentOperator = "-";
             break;
         case "buttonMultiply":
-            if (currentInput.length || history.length) {
-                history.push(currentInput.join(""), "*");
-                histDisp.innerHTML = history.join(" ");
-                currentInput = [];
-                disp.innerHTML = calculate(history);
-            }
+            currentOperator = "×";
             break;
         case "buttonDivide":
-            if (currentInput.length || history.length) {
-                history.push(currentInput.join(""), "/");
-                histDisp.innerHTML = history.join(" ");
-                currentInput = [];
-                disp.innerHTML = calculate(history);
-            }
+            currentOperator = "÷";
             break;
         case "buttonEquals":
             if (currentInput.length || history.length) {
@@ -111,13 +78,36 @@ function buttonPress() {
                 histDisp.innerHTML = history.join(" ");
                 currentInput = [calculate(history)];
                 disp.innerHTML = currentInput.join("");
-                //history.pop(); // remove equal sign
                 history = [];
             }
+            prevOperator = "=";
             break;
         case "buttonDecimal":
             break;
         case "buttonSign":
+            break;
+    }
+    switch (buttonClass) {
+        case "numBut":
+            if ((currentInput[0] === 0 && currentInput.length) || prevOperator === "=") {
+                currentInput = [num];
+                history = [];
+                prevOperator = "";
+                histDisp.innerHTML = "";
+            }
+            else {
+                currentInput.push(num);
+            }
+            disp.innerHTML = currentInput.join("");
+            break;
+        case "opBut":
+            if ((currentInput.length || history.length)  && prevOperator != currentOperator) {
+                history.push(currentInput.join(""), currentOperator);
+                histDisp.innerHTML = history.join(" ");
+                currentInput = [];
+                disp.innerHTML = calculate(history);
+            }
+            prevOperator = currentOperator;
             break;
     }
 }
@@ -171,10 +161,10 @@ function operate() {
         case "-":
             result = subtract(operands);
             break;
-        case "*":
+        case "×":
             result = multiply(operands);
             break;
-        case "/":
+        case "÷":
             result = divide(operands);
             break;
     }
