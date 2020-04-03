@@ -1,6 +1,7 @@
 const buttons = document.querySelectorAll("button");
 const disp = document.querySelector("#output");
 const histDisp = document.querySelector("#history");
+const displayLimit = 11;
 let currentInput = [];
 let history = [];
 let prevOperator = "";
@@ -76,36 +77,69 @@ function buttonPress() {
             if (currentInput.length || history.length) {
                 history.push(currentInput.join(""), "=");
                 histDisp.innerHTML = history.join(" ");
-                currentInput = [calculate(history)];
-                disp.innerHTML = currentInput.join("");
+                let temp = calculate(history);
+                currentInput = [temp];
+                if (temp.toString().length <= displayLimit) {
+                    disp.innerHTML = temp;
+                }
+                else {
+                    disp.innerHTML = temp.toFixed(displayLimit - 1);
+                }
                 history = [];
             }
             prevOperator = "=";
             break;
         case "buttonDecimal":
+            if (!currentInput.includes(".") && !currentInput.includes("0.")) {
+                if (!currentInput.length || prevOperator === "=" ) {
+                    currentInput = ["0."];
+                    history = [];
+                    prevOperator = "";
+                    histDisp.innerHTML = "";
+                }
+                else {
+                    currentInput.push(".");
+                }
+                disp.innerHTML = currentInput.join("");
+            }
             break;
         case "buttonSign":
+            if (currentInput.length && currentInput[0] === "-") {
+                currentInput.shift();
+            }
+            else if (currentInput.length) {
+                currentInput.unshift("-");
+            }
+            disp.innerHTML = currentInput.join("");
             break;
     }
     switch (buttonClass) {
         case "numBut":
-            if ((currentInput[0] === 0 && currentInput.length) || prevOperator === "=") {
-                currentInput = [num];
-                history = [];
-                prevOperator = "";
-                histDisp.innerHTML = "";
+            if (currentInput.join("").split("").length <= displayLimit) {
+                if ((currentInput[0] === 0 && currentInput.length  && !currentInput.includes("0.")) || prevOperator === "=") {
+                    currentInput = [num];
+                    history = [];
+                    prevOperator = "";
+                    histDisp.innerHTML = "";
+                }
+                else {
+                    currentInput.push(num);
+                }
+                disp.innerHTML = currentInput.join("");
             }
-            else {
-                currentInput.push(num);
-            }
-            disp.innerHTML = currentInput.join("");
             break;
         case "opBut":
             if ((currentInput.length || history.length)  && prevOperator != currentOperator) {
                 history.push(currentInput.join(""), currentOperator);
                 histDisp.innerHTML = history.join(" ");
                 currentInput = [];
-                disp.innerHTML = calculate(history);
+                let temp = calculate(history);
+                if (temp.toString().length <= displayLimit) {
+                    disp.innerHTML = temp;
+                }
+                else {
+                    disp.innerHTML = temp.toFixed(displayLimit - 1);
+                }
             }
             prevOperator = currentOperator;
             break;
