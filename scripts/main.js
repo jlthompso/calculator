@@ -15,6 +15,7 @@ function buttonPress() {
     let buttonId = this.id;
     let num;
     let currentOperator;
+    console.log(currentInput);
     switch (buttonId) {
         case "button0":
             num = 0;
@@ -106,21 +107,25 @@ function buttonPress() {
         case "buttonSign":
             if (currentInput.length && currentInput[0] === "-") {
                 currentInput.shift();
+                disp.innerHTML = currentInput.join("");
             }
-            else if (currentInput.length) {
+            else if (currentInput.length && !(currentInput.length === 1 && currentInput[0] === 0)) {
                 currentInput.unshift("-");
+                disp.innerHTML = currentInput.join("");
             }
-            disp.innerHTML = currentInput.join("");
             break;
     }
     switch (buttonClass) {
         case "numBut":
             if (currentInput.join("").split("").length <= displayLimit) {
-                if ((currentInput[0] === 0 && currentInput.length  && !currentInput.includes("0.")) || prevOperator === "=") {
+                if (prevOperator === "=") {
                     currentInput = [num];
                     history = [];
                     prevOperator = "";
                     histDisp.innerHTML = "";
+                }
+                else if (currentInput[0] === 0 && currentInput[1] !== ".") {
+                    currentInput = [num];
                 }
                 else {
                     currentInput.push(num);
