@@ -2,6 +2,7 @@ const buttons = document.querySelectorAll("button");
 const disp = document.querySelector("#output");
 const histDisp = document.querySelector("#history");
 const displayLimit = 11;
+const histLimit = 45;
 let currentInput = [];
 let history = [];
 let prevOperator = "";
@@ -15,7 +16,6 @@ function buttonPress() {
     let buttonId = this.id;
     let num;
     let currentOperator;
-    console.log(currentInput);
     switch (buttonId) {
         case "button0":
             num = 0;
@@ -55,8 +55,17 @@ function buttonPress() {
             histDisp.innerHTML = "";
             break;
         case "buttonClearEntry":
-            currentInput = [];
-            disp.innerHTML = 0;
+            if (prevOperator === "=") {
+                prevOperator = "";
+                currentInput = [];
+                disp.innerHTML = 0;
+                history = [];
+                histDisp.innerHTML = "";
+            }
+            else { 
+                currentInput = [];
+                disp.innerHTML = 0;
+            }
             break;
         case "buttonBackspace":
             currentInput.pop();
@@ -77,14 +86,29 @@ function buttonPress() {
         case "buttonEquals":
             if (currentInput.length || history.length) {
                 history.push(currentInput.join(""), "=");
-                histDisp.innerHTML = history.join(" ");
+                if (history.join(" ").length > histLimit) {
+                    histDisp.innerHTML = "TRUNCATED";
+                }
+                else {
+                    histDisp.innerHTML = history.join(" ");
+                }
                 let temp = calculate(history);
                 currentInput = [temp];
-                if (temp.toString().length <= displayLimit) {
+                if (temp.toString().length < displayLimit) {
                     disp.innerHTML = temp;
                 }
                 else {
-                    disp.innerHTML = temp.toFixed(displayLimit - 1);
+                    let s = temp.toString().split(".");
+                    let lenIntegral = s[0].length;
+                    if (lenIntegral > displayLimit) {
+                        disp.innerHTML = "ERR";
+                        prevOperator = "";
+                        currentInput = [];
+                    }
+                    else {
+                        lenFractional = displayLimit - lenIntegral;
+                        disp.innerHTML = temp.toFixed(lenFractional);
+                    }
                 }
                 history = [];
             }
@@ -117,7 +141,7 @@ function buttonPress() {
     }
     switch (buttonClass) {
         case "numBut":
-            if (currentInput.join("").split("").length <= displayLimit) {
+            if (currentInput.join("").split("").length < displayLimit) {
                 if (prevOperator === "=") {
                     currentInput = [num];
                     history = [];
@@ -134,16 +158,43 @@ function buttonPress() {
             }
             break;
         case "opBut":
-            if ((currentInput.length || history.length)  && prevOperator != currentOperator) {
-                history.push(currentInput.join(""), currentOperator);
-                histDisp.innerHTML = history.join(" ");
+            if (currentInput.length || history.length) {
+                if (history.length) {
+                    let h = history.pop();
+                    if (h === "+" || h === "-" || h === "×" || h === "÷") {
+                        // replace operator if no number has been entered
+                        history.push(currentOperator);
+                    }
+                    else {
+                        history.push(h);
+                    }
+                }
+                if (currentInput.length) {
+                    history.push(currentInput.join(""), currentOperator);
+                }
+                if (history.join(" ").length > histLimit) {
+                    histDisp.innerHTML = "TRUNCATED";
+                }
+                else {
+                    histDisp.innerHTML = history.join(" ");
+                }
                 currentInput = [];
                 let temp = calculate(history);
-                if (temp.toString().length <= displayLimit) {
+                if (temp.toString().length < displayLimit) {
                     disp.innerHTML = temp;
                 }
                 else {
-                    disp.innerHTML = temp.toFixed(displayLimit - 1);
+                    let s = temp.toString().split(".");
+                    let lenIntegral = s[0].length;
+                    if (lenIntegral > displayLimit) {
+                        disp.innerHTML = "ERR";
+                        prevOperator = "";
+                        currentInput = [];
+                    }
+                    else {
+                        lenFractional = displayLimit - lenIntegral;
+                        disp.innerHTML = temp.toFixed(lenFractional);
+                    }
                 }
             }
             prevOperator = currentOperator;
